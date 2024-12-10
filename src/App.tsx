@@ -1,39 +1,48 @@
-import { useCallback } from 'react';
 import {
   ReactFlow,
   Background,
   Controls,
   MiniMap,
-  addEdge,
-  useNodesState,
-  useEdgesState,
-  type OnConnect,
+  Panel
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
 
-import { initialNodes, nodeTypes } from './nodes';
-import { initialEdges, edgeTypes } from './edges';
+import { nodeTypes } from './nodes';
+import { edgeTypes } from './edges';
+
+import { useFlowStore } from './store/soundStore';
+
+// @ts-expect-error unknown
+const selector = (store) => ({
+  nodes: store.nodes,
+  edges: store.edges,
+  createNode: store.createNode,
+  onNodesChange: store.onNodesChange,
+  onEdgesChange: store.onEdgesChange,
+  onNodesDelete: store.removeNodes,
+  addEdge: store.addEdge,
+});
 
 export default function App() {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const onConnect: OnConnect = useCallback(
-    (connection) => setEdges((edges) => addEdge(connection, edges)),
-    [setEdges]
-  );
+  const store = useFlowStore(selector)
 
   return (
     <ReactFlow
-      nodes={nodes}
+      nodes={store.nodes}
       nodeTypes={nodeTypes}
-      onNodesChange={onNodesChange}
-      edges={edges}
+      edges={store.edges}
       edgeTypes={edgeTypes}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
+      onNodesChange={store.onNodesChange}
+      onNodesDelete={store.onNodesDelete}
+      onEdgesChange={store.onEdgesChange}
+      onConnect={store.addEdge}
       fitView
     >
+      <Panel position="top-right">
+        <button onClick={() => store.createNode('osc')}>osc</button>
+        <button onClick={() => store.createNode('amp')}>amp</button>
+      </Panel>
       <Background />
       <MiniMap />
       <Controls />
