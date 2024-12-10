@@ -16,11 +16,11 @@ export function Out({ id: _id, data }: NodeProps<OutNode>) {
   const { isRunning, toggleAudio } = useFlowStore(selector, shallow)
 
   return (
-    <div>
+    <div className="react-flow__node-default">
       <Handle type="target" position={Position.Top} />
 
       <div>
-        <p>Output Node</p>
+        <p className="font-bold">Output Node</p>
 
         <button onClick={toggleAudio}>
           {isRunning ? (

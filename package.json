@@ -9,10 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "4.0.0-beta.6",
     "@xyflow/react": "^12.3.6",
     "nanoid": "^5.0.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tailwindcss": "4.0.0-beta.6",
     "zustand": "^5.0.2"
   },
   "license": "MIT",

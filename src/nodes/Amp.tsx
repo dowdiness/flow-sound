@@ -16,11 +16,11 @@ export function Amp({ id, data }: NodeProps<AmpNode>) {
   const { setGain } = useFlowStore(selector(id), shallow)
 
   return (
-    <div>
+    <div className="react-flow__node-default">
       <Handle type="target" position={Position.Top} />
 
       <div>
-        <p>Amp Node</p>
+        <p className="font-bold">Amp Node</p>
 
         <label>
           <span>Gain</span>

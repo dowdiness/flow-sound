@@ -17,9 +17,9 @@ export function Osc({ id, data }: NodeProps<OscNode>) {
   const { setFrequency, setType } = useFlowStore(selector(id), shallow)
 
   return (
-    <div>
+    <div className="react-flow__node-default">
       <div>
-        <p>Oscilator Node</p>
+        <p className="font-bold">Oscilator Node</p>
 
         <label>
           <span>Frequency</span>
