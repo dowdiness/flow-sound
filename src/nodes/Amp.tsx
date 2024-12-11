@@ -2,7 +2,7 @@ import { type ChangeEvent } from 'react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { shallow } from 'zustand/shallow';
 
-import { useFlowStore } from '../store/soundStore';
+import { useFlowStore } from '@/store/soundStore';
 import { type AmpNode } from './types';
 
 // @ts-expect-error unknonw

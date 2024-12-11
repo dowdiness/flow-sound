@@ -8,10 +8,10 @@ import {
 
 import '@xyflow/react/dist/style.css';
 
-import { nodeTypes } from './nodes';
-import { edgeTypes } from './edges';
+import { nodeTypes } from '@/nodes';
+import { edgeTypes } from '@/edges';
 
-import { useFlowStore } from './store/soundStore';
+import { useFlowStore } from '@/store/soundStore';
 
 // @ts-expect-error unknown
 const selector = (store) => ({

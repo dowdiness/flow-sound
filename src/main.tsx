@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import App from './App';
+import App from '@/App';
 
-import './index.css';
+import '@/index.css';
 
-import { init } from './audio/context'
+import { init } from '@/audio/context'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

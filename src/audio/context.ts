@@ -1,5 +1,5 @@
-import { nodes as initialNodes, edges as initialEdges } from '../store/soundStore'
-import { includes } from '../utils'
+import { nodes as initialNodes, edges as initialEdges } from '@/store/soundStore'
+import { includes } from '@/lib/utils'
 import { audioNodeNames } from './types'
 import { createAudioNode, connect } from './index'
 

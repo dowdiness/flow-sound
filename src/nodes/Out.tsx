@@ -1,7 +1,7 @@
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { shallow } from 'zustand/shallow';
 
-import { useFlowStore } from '../store/soundStore';
+import { useFlowStore } from '@/store/soundStore';
 import { type OutNode } from './types';
 
 // @ts-expect-error unknonw

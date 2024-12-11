@@ -8,7 +8,7 @@ import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import { nanoid } from 'nanoid';
 import { createWithEqualityFn } from 'zustand/traditional';
 
-import { AppNode } from '../nodes/types';
+import { AppNode } from '@/nodes/types';
 
 import {
   createAudioNode,
