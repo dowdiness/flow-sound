@@ -1,10 +1,14 @@
-import type { Node, BuiltInNode } from '@xyflow/react';
+import type { Node } from '@xyflow/react';
 
-export type OscNode = Node<{ frequency: number, type: string }, 'osc'>;
+export type OutOptions = { on: string, off: string }
+
+export type OscNode = Node<{ frequency: number, type: OscillatorType }, 'osc'>;
 export type AmpNode = Node<{ gain: number }, 'amp'>;
-export type OutNode = Node<{ on: string, off: string }, 'out'>;
+export type OutNode = Node<OutOptions, 'out'>;
+export type AnalyserNode = Node;
+
 export type AppNode =
-  BuiltInNode
   | OscNode
   | AmpNode
-  | OutNode;
+  | OutNode
+  | AnalyserNode;

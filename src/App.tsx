@@ -42,6 +42,7 @@ export default function App() {
       <Panel position="top-right">
         <button onClick={() => store.createNode('osc')}>osc</button>
         <button onClick={() => store.createNode('amp')}>amp</button>
+        <button onClick={() => store.createNode('analyser')}>analyser</button>
       </Panel>
       <Background />
       <MiniMap />

@@ -1,4 +1,5 @@
 import { getAudioContext } from './context'
+import { type OutOptions } from '@/nodes/types'
 
 export const audioNodes = new Map<string, AudioNode>();
 
@@ -10,16 +11,19 @@ export function toggleAudio() {
   return isRunning() ? getAudioContext().suspend() : getAudioContext().resume()
 }
 
+type nodeOptions =
+  | OscillatorOptions
+  | GainOptions
+  | AnalyserOptions
+  | OutOptions
+
 // @ts-expect-error audio
-export function createAudioNode(id: string, type: nodeTypes, data) {
+export function createAudioNode(id: string, type: nodeTypes, data: nodeOptions) {
   const context = getAudioContext();
 
   switch (type) {
     case 'osc': {
-      const oscNode = new OscillatorNode(context, {
-        frequency: data.frequency,
-        type: data.type
-      });
+      const oscNode = new OscillatorNode(context, data as OscillatorOptions);
       oscNode.start();
 
       audioNodes.set(id, oscNode);
@@ -27,19 +31,14 @@ export function createAudioNode(id: string, type: nodeTypes, data) {
     }
 
     case 'amp': {
-      const gainNode = new GainNode(context, { gain: data.gain});
+      const gainNode = new GainNode(context, data as GainOptions);
 
       audioNodes.set(id, gainNode);
       break;
     }
 
     case 'analyser': {
-      const analyserNode = new AnalyserNode(context, {
-        fftSize: 2048,
-        minDecibels: -90,
-        maxDecibels: -10,
-        smoothingTimeConstant: 0.85
-      });
+      const analyserNode = new AnalyserNode(context, data as AnalyserOptions);
       const bufferLength = analyserNode.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
       analyserNode.getByteTimeDomainData(dataArray);
@@ -47,6 +46,10 @@ export function createAudioNode(id: string, type: nodeTypes, data) {
       audioNodes.set(id, analyserNode);
       break;
     }
+
+    // case 'mix': {
+    //   break
+    // }
 
     case 'out': {
       audioNodes.set(id, context.destination);

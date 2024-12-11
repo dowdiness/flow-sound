@@ -8,7 +8,7 @@ import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
 import { nanoid } from 'nanoid';
 import { createWithEqualityFn } from 'zustand/traditional';
 
-import { AppNode } from '@/nodes/types';
+import { type AppNode } from '@/nodes/types';
 
 import {
   createAudioNode,
@@ -17,7 +17,7 @@ import {
   connect,
   isRunning,
   toggleAudio
-} from '../audio';
+} from '@/audio';
 
 type FlowStoreState = {
   nodes: Node[],
@@ -31,12 +31,6 @@ type FlowStoreActions = {
   toggleAudio: () => void,
 }
 type FlowStore = FlowStoreState & FlowStoreActions
-
-// export const createFlowStore = (createState) => {
-//   return typeof createState === 'function'
-//       ? createInternal(createState)
-//       : createInternal;
-// };
 
 export const nodes: AppNode[] = [
   { type: 'osc', id: 'osc', data: { frequency: 440, type: 'square' }, position: { x: 0, y: -150 }},
@@ -93,7 +87,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
 
     switch(type) {
       case 'osc': {
-        const data = { frequency: 440, type: 'sine' }
+        const data = { frequency: 440, type: 'sine' } as const
         const position = { x: 0, y: 0 }
 
         createAudioNode(id, type, data)
@@ -105,6 +99,19 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
         const data = { gain: 0.5 }
         const position = { x: 0, y: 0 }
 
+        createAudioNode(id, type, data)
+        set({ nodes: [...get().nodes, { id, type, data, position }]})
+        break
+      }
+
+      case 'analyser': {
+        const data = {
+          fftSize: 2048,
+          minDecibels: -90,
+          maxDecibels: -10,
+          smoothingTimeConstant: 0.85
+        }
+        const position = { x: 0, y: 0 }
         createAudioNode(id, type, data)
         set({ nodes: [...get().nodes, { id, type, data, position }]})
         break
@@ -123,6 +130,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
       })
     })
   },
+
   removeNodes(nodes: AppNode[]) {
     for (const { id } of nodes) {
       removeAudioNode(id)
