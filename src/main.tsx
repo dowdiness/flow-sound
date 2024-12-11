@@ -5,8 +5,12 @@ import App from './App';
 
 import './index.css';
 
+import { init } from './audio/context'
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
 );
+
+await init();
