@@ -6,9 +6,11 @@ export type OscNode = Node<{ frequency: number, type: OscillatorType }, 'osc'>;
 export type AmpNode = Node<{ gain: number }, 'amp'>;
 export type OutNode = Node<OutOptions, 'out'>;
 export type AnalyserNode = Node;
+export type MixerNode = Node;
 
 export type AppNode =
   | OscNode
   | AmpNode
   | OutNode
-  | AnalyserNode;
+  | AnalyserNode
+  | MixerNode;

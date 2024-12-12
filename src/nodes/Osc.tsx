@@ -26,7 +26,7 @@ export function Osc({ id, data }: NodeProps<OscNode>) {
           <input
             className='nodrag'
             type='range'
-            min='10'
+            min='1'
             max='1000'
             value={data.frequency}
             onChange={setFrequency}

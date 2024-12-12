@@ -116,6 +116,15 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
         set({ nodes: [...get().nodes, { id, type, data, position }]})
         break
       }
+
+      case 'mixer': {
+        const position = { x: 0, y: 0 }
+        const data = {}
+
+        createAudioNode(id, type, data)
+        set({ nodes: [...get().nodes, { id, type, data, position }]})
+        break
+      }
     }
   },
 

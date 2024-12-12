@@ -2,6 +2,7 @@ import { nodes as initialNodes, edges as initialEdges } from '@/store/soundStore
 import { includes } from '@/lib/utils'
 import { audioNodeNames } from './types'
 import { createAudioNode, connect } from './index'
+import mixerWorkletUrl from './processor/MixerProcessor.ts?url'
 
 let context: AudioContext | undefined;
 
@@ -22,6 +23,8 @@ export function getAudioContext() {
 
 async function initAudio() {
   await getAudioContext().suspend()
+  await initAudioWorklet()
+  initAudioGraph()
 }
 
 let isClicked: Promise<void> | undefined;
@@ -43,7 +46,7 @@ export async function initAudioOnFirstClick() {
   }
 }
 
-export async function initAudioGraph() {
+export function initAudioGraph() {
   initialNodes.forEach(((node) => {
     if (includes(audioNodeNames, node.type)) {
       createAudioNode(node.id, node.type, node.data)
@@ -55,7 +58,10 @@ export async function initAudioGraph() {
   })
 }
 
-export async function init() {
-  await initAudioOnFirstClick()
-  await initAudioGraph()
+async function initAudioWorklet() {
+  if (!context) {
+    throw Error('Initiarize AudioWorklet is failed.')
+  }
+
+  await context.audioWorklet.addModule(mixerWorkletUrl)
 }

@@ -15,6 +15,7 @@ export function Analyser() {
 
         <canvas
           ref={canvasRef}
+          className='nodrag'
           width="150"
           height="65"
         />

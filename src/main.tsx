@@ -5,7 +5,7 @@ import App from '@/App';
 
 import '@/index.css';
 
-import { init } from '@/audio/context'
+import { initAudioOnFirstClick } from '@/audio/context'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -13,4 +13,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 
-await init();
+await initAudioOnFirstClick();

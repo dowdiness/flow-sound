@@ -47,9 +47,12 @@ export function createAudioNode(id: string, type: nodeTypes, data: nodeOptions) 
       break;
     }
 
-    // case 'mix': {
-    //   break
-    // }
+    case 'mixer': {
+      const mixerNode = new AudioWorkletNode(context, 'mixer-processor');
+      audioNodes.set(id, mixerNode);
+
+      break
+    }
 
     case 'out': {
       audioNodes.set(id, context.destination);
@@ -65,7 +68,6 @@ export function updateAudioNode(id: string, data) {
   if (!node) return
 
   for (const [key, val] of Object.entries(data)) {
-    console.log(key, val)
     // @ts-expect-error no key
     if (node[key] instanceof AudioParam) {
       node

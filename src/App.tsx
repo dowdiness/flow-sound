@@ -39,10 +39,11 @@ export default function App() {
       onConnect={store.addEdge}
       fitView
     >
-      <Panel position="top-right">
-        <button onClick={() => store.createNode('osc')}>osc</button>
-        <button onClick={() => store.createNode('amp')}>amp</button>
-        <button onClick={() => store.createNode('analyser')}>analyser</button>
+      <Panel position="top-right" className='space-x-2'>
+        <button className='border' onClick={() => store.createNode('osc')}>osc</button>
+        <button className='border' onClick={() => store.createNode('amp')}>amp</button>
+        <button className='border' onClick={() => store.createNode('analyser')}>analyser</button>
+        <button className='border' onClick={() => store.createNode('mixer')}>mixer</button>
       </Panel>
       <Background />
       <MiniMap />

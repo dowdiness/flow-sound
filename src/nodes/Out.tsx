@@ -22,7 +22,7 @@ export function Out({ id: _id, data }: NodeProps<OutNode>) {
       <div>
         <p className="font-bold">Output Node</p>
 
-        <button onClick={toggleAudio}>
+        <button className='nodrag' onClick={toggleAudio}>
           {isRunning ? (
             <span role="img" aria-label="mute">
               {data.on}
