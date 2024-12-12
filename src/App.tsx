@@ -12,6 +12,7 @@ import { nodeTypes } from '@/nodes';
 import { edgeTypes } from '@/edges';
 
 import { useFlowStore } from '@/store/soundStore';
+import { Button } from '@/components/ui/button'
 
 // @ts-expect-error unknown
 const selector = (store) => ({
@@ -40,10 +41,10 @@ export default function App() {
       fitView
     >
       <Panel position="top-right" className='space-x-2'>
-        <button className='border' onClick={() => store.createNode('osc')}>osc</button>
-        <button className='border' onClick={() => store.createNode('amp')}>amp</button>
-        <button className='border' onClick={() => store.createNode('analyser')}>analyser</button>
-        <button className='border' onClick={() => store.createNode('mixer')}>mixer</button>
+        <Button onClick={() => store.createNode('osc')}>osc</Button>
+        <Button onClick={() => store.createNode('amp')}>amp</Button>
+        <Button onClick={() => store.createNode('analyser')}>analyser</Button>
+        <Button onClick={() => store.createNode('mixer')}>mixer</Button>
       </Panel>
       <Background />
       <MiniMap />
