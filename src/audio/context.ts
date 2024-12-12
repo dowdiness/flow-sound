@@ -2,7 +2,7 @@ import { nodes as initialNodes, edges as initialEdges } from '@/store/soundStore
 import { includes } from '@/lib/utils'
 import { audioNodeNames } from './types'
 import { createAudioNode, connect } from './index'
-import mixerWorkletUrl from './processor/MixerProcessor.ts?url'
+import mixerWorkletUrl from '/processor/MixerProcessor.js?url'
 
 let context: AudioContext | undefined;
 

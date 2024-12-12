@@ -3,7 +3,7 @@ export class MixerProcessor extends AudioWorkletProcessor {
     super();
   }
 
-  process(inputList: Float32Array[][], outputList: Float32Array[][], _parameters: Record<string, Float32Array>) {
+  process(inputList, outputList, _parameters) {
     const sourceLimit = Math.min(inputList.length, outputList.length)
 
     for (let inputNum = 0; inputNum < sourceLimit; inputNum++) {
