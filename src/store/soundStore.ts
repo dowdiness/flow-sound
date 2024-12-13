@@ -2,9 +2,16 @@ import type {
   OnNodesChange,
   OnEdgesChange,
   Node,
-  Edge
+  NodeChange,
+  EdgeChange,
+  Edge,
+  Connection
 } from '@xyflow/react';
-import { applyNodeChanges, applyEdgeChanges } from '@xyflow/react';
+import {
+  addEdge,
+  applyNodeChanges,
+  applyEdgeChanges
+} from '@xyflow/react';
 import { nanoid } from 'nanoid';
 import { createWithEqualityFn } from 'zustand/traditional';
 
@@ -55,16 +62,23 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
   edges,
   isRunning: isRunning(),
 
-  onNodesChange(changes) {
+  onNodesChange(changes: NodeChange<AppNode>[]) {
     set({
       nodes: applyNodeChanges(changes, get().nodes),
     });
   },
 
-  onEdgesChange(changes) {
+  onEdgesChange(changes: EdgeChange[]) {
     set({
       edges: applyEdgeChanges(changes, get().edges),
     });
+  },
+
+  onConnect(newConnection: Connection) {
+    // connect react flow nodes
+    set({ edges: addEdge(newConnection, get().edges) });
+    // connect audio nodes
+    connect(newConnection.source, newConnection.target)
   },
 
   toggleAudio() {
@@ -73,17 +87,8 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
     })
   },
 
-  // @ts-expect-error no data types
-  addEdge(data) {
-    const id = nanoid(6);
-    const edge = { id, ...data };
-
-    set({ edges: [edge, ...get().edges] });
-    // connect audio nodes
-    connect(data.source, data.target)
-  },
-
-  removeEdges(edges: Edge[]) {
+  // onEdgesDelete
+  disconnectAudioEdges(edges: Edge[]) {
     for (const { source, target } of edges) {
       disconnect(source, target)
     }
@@ -147,6 +152,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
     })
   },
 
+  // onNodesDelete
   removeNodes(nodes: AppNode[]) {
     for (const { id } of nodes) {
       removeAudioNode(id)

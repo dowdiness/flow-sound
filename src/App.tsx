@@ -22,8 +22,8 @@ const selector = (store) => ({
   onNodesChange: store.onNodesChange,
   onEdgesChange: store.onEdgesChange,
   onNodesDelete: store.removeNodes,
-  onEdgesDelete: store.removeEdges,
-  addEdge: store.addEdge,
+  onEdgesDelete: store.disconnectAudioEdges,
+  onConnect: store.onConnect,
 });
 
 export default function App() {
@@ -39,7 +39,7 @@ export default function App() {
       onNodesDelete={store.onNodesDelete}
       onEdgesChange={store.onEdgesChange}
       onEdgesDelete={store.onEdgesDelete}
-      onConnect={store.addEdge}
+      onConnect={store.onConnect}
       fitView
     >
       <Panel position="top-right" className='space-x-2'>
