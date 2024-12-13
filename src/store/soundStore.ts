@@ -15,6 +15,7 @@ import {
   updateAudioNode,
   removeAudioNode,
   connect,
+  disconnect,
   isRunning,
   toggleAudio
 } from '@/audio';
@@ -80,6 +81,12 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
     set({ edges: [edge, ...get().edges] });
     // connect audio nodes
     connect(data.source, data.target)
+  },
+
+  removeEdges(edges: Edge[]) {
+    for (const { source, target } of edges) {
+      disconnect(source, target)
+    }
   },
 
   createNode(type: string) {

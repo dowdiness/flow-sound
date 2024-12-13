@@ -22,6 +22,7 @@ const selector = (store) => ({
   onNodesChange: store.onNodesChange,
   onEdgesChange: store.onEdgesChange,
   onNodesDelete: store.removeNodes,
+  onEdgesDelete: store.removeEdges,
   addEdge: store.addEdge,
 });
 
@@ -37,6 +38,7 @@ export default function App() {
       onNodesChange={store.onNodesChange}
       onNodesDelete={store.onNodesDelete}
       onEdgesChange={store.onEdgesChange}
+      onEdgesDelete={store.onEdgesDelete}
       onConnect={store.addEdge}
       fitView
     >
