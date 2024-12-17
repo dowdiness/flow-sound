@@ -1,6 +1,9 @@
 import { getAudioContext } from './context'
 import { type OutOptions } from '@/nodes/types'
-
+import type { audioNodeTypes } from '@/audio/types'
+import { el } from '@elemaudio/core'
+import WebAudioRenderer from '@elemaudio/web-renderer';
+import { initAudioSamples } from './context'
 export const audioNodes = new Map<string, AudioNode>();
 
 export function isRunning() {
@@ -17,8 +20,7 @@ type nodeOptions =
   | AnalyserOptions
   | OutOptions
 
-// @ts-expect-error audio
-export function createAudioNode(id: string, type: nodeTypes, data: nodeOptions) {
+export function createAudioNode(id: string, type: audioNodeTypes, data: nodeOptions) {
   const context = getAudioContext();
 
   switch (type) {
@@ -57,6 +59,34 @@ export function createAudioNode(id: string, type: nodeTypes, data: nodeOptions) 
     case 'out': {
       audioNodes.set(id, context.destination);
       break;
+    }
+
+    case 'renderer': {
+      const core = new WebAudioRenderer()
+      core.initialize(context).then(async (node) => {
+        await initAudioSamples(core)
+        const v = 10
+        const vs = el.sm(el.const({key: 'ex1:mix', value: v * 4}));
+        const gs = el.sm(el.const({key: 'ex1:gain', value: (1.2 - Math.sqrt(v))}));
+
+        const dry = el.mul(vs, el.cycle(440));
+        const wet = el.tanh(dry);
+        const cutoff = el.mul(800, el.add(1, el.cycle(100)));
+
+        const t = el.lowpass(cutoff, 1.414, el.mul(gs, wet))
+
+        core.render(
+          t,
+          t,
+        )
+        audioNodes.set(id, node)
+      })
+
+      break
+    }
+
+    default: {
+      throw Error(`${type satisfies never} is not handled!`)
     }
   }
 }

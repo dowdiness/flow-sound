@@ -16,6 +16,7 @@ import { nanoid } from 'nanoid';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 import { type AppNode } from '@/nodes/types';
+import type { audioNodeTypes } from '@/audio/types';
 
 import {
   createAudioNode,
@@ -94,7 +95,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
     }
   },
 
-  createNode(type: string) {
+  createNode(type: audioNodeTypes) {
     const id = nanoid()
 
     switch(type) {
@@ -136,6 +137,24 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
         createAudioNode(id, type, data)
         set({ nodes: [...get().nodes, { id, type, data, position }]})
         break
+      }
+
+      case 'out': {
+        console.error("Can't create out node!")
+        break
+      }
+
+      case 'renderer': {
+        const position = { x: 0, y: 0 }
+        const data = {}
+
+        createAudioNode(id, type, data)
+        set({ nodes: [...get().nodes, { id, type, data, position }]})
+        break
+      }
+
+      default: {
+        throw Error(type satisfies never)
       }
     }
   },

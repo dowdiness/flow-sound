@@ -51,6 +51,7 @@ export default function App() {
               <Button onClick={() => store.createNode('amp')}>amp</Button>
               <Button onClick={() => store.createNode('analyser')}>analyser</Button>
               <Button onClick={() => store.createNode('mixer')}>mixer</Button>
+              <Button onClick={() => store.createNode('renderer')}>renderer</Button>
             </Panel>
             <Background />
             <MiniMap />

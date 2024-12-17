@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@elemaudio/core": "^4.0.1",
+    "@elemaudio/web-renderer": "^4.0.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@xyflow/react": "^12.3.6",
     "class-variance-authority": "^0.7.1",

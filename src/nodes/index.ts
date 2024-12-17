@@ -5,6 +5,7 @@ import { Osc } from './Osc';
 import { Out } from './Out';
 import { Analyser } from './Analyser';
 import { Mixer } from './Mixer';
+import { Renderer } from './Renderer';
 
 export const nodeTypes = {
   'amp': Amp,
@@ -12,5 +13,5 @@ export const nodeTypes = {
   'out': Out,
   'analyser': Analyser,
   'mixer': Mixer,
-  // Add any of your custom nodes here!
+  'renderer': Renderer,
 } satisfies NodeTypes;

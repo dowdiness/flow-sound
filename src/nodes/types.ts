@@ -7,10 +7,12 @@ export type AmpNode = Node<{ gain: number }, 'amp'>;
 export type OutNode = Node<OutOptions, 'out'>;
 export type AnalyserNode = Node;
 export type MixerNode = Node;
+export type RendererNode = Node;
 
 export type AppNode =
   | OscNode
   | AmpNode
   | OutNode
   | AnalyserNode
-  | MixerNode;
+  | MixerNode
+  | RendererNode;
