@@ -3,6 +3,7 @@ import { includes } from '@/lib/utils'
 import { audioNodeNames } from './types'
 import { createAudioNode, connect } from './index'
 import mixerWorkletUrl from '/processor/MixerProcessor.js?url'
+import { githubPath } from '@/lib/utils.ts'
 
 let context: AudioContext | undefined;
 
@@ -66,4 +67,21 @@ async function initAudioWorklet() {
   }
 
   await context.audioWorklet.addModule(mixerWorkletUrl)
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function initAudioSamples(core: any) {
+  if (!context) {
+    throw Error('Initiarize Audio Samples is failed.')
+  }
+
+  const res = await fetch(githubPath('github:wilf312/test/master/docs/trumpet1.mp3'));
+  const sampleBuffer = await context.decodeAudioData(await res.arrayBuffer());
+
+  core.updateVirtualFileSystem({
+    'sample0': [
+      sampleBuffer.getChannelData(0),
+      sampleBuffer.getChannelData(1),
+    ],
+  });
 }
