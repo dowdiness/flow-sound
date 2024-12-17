@@ -33,11 +33,13 @@ let isClicked: Promise<void> | undefined;
  * A click is needed to initialize audio because of the Autoplay Policy.
  * @see {@link https://www.w3.org/TR/autoplay-detection/}
 */
-export async function initAudioOnFirstClick() {
-  if(!isClicked) {
+export async function initAudioOnFirstClick(element?: HTMLElement) {
+  const el = element ? element : document
+
+  if (!isClicked) {
     isClicked = new Promise<void>((resolve) => {
-      document.addEventListener('click', async function listner() {
-        document.removeEventListener('click', listner)
+      el.addEventListener('click', async function listner() {
+        el.removeEventListener('click', listner)
         await initAudio()
         resolve()
       })
