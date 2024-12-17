@@ -1,4 +1,3 @@
-import { useRef, useEffect } from 'react'
 import {
   ReactFlow,
   Background,
@@ -16,8 +15,6 @@ import { useFlowStore } from '@/store/soundStore';
 import { Button } from '@/components/ui/button'
 import { Layout } from '@/components/layouts/layout'
 
-import { initAudioOnFirstClick } from '@/audio/context'
-
 // @ts-expect-error unknown
 const selector = (store) => ({
   nodes: store.nodes,
@@ -31,16 +28,7 @@ const selector = (store) => ({
 });
 
 export default function App() {
-  const buttonRef = useRef<HTMLButtonElement>(null)
   const store = useFlowStore(selector)
-
-  useEffect(() => {
-    if (buttonRef.current) {
-      initAudioOnFirstClick(buttonRef.current).catch((error) => {
-        console.error(`Audio initialization error ${error}`)
-      })
-    }
-  }, [])
 
   return (
     <Layout
@@ -69,7 +57,7 @@ export default function App() {
             <Controls />
           </ReactFlow>
       )}}
-      sub={(setIsClicked) => {
+      sub={(setIsClicked, buttonRef) => {
         return (
           <div className={'m-auto h-full w-full flex justify-center items-center'}>
             <Button
