@@ -42,7 +42,7 @@ type FlowStoreActions = {
 type FlowStore = FlowStoreState & FlowStoreActions
 
 export const nodes: AppNode[] = [
-  { type: 'osc', id: 'osc', data: { frequency: 440, type: 'square' }, position: { x: 0, y: -150 }},
+  { type: 'osc', id: 'osc', data: { frequency: 440, type: 'square' }, position: { x: 0, y: -200 }},
   {
     id: "amp",
     type: "amp",
