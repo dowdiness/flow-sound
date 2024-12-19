@@ -4,11 +4,12 @@ import { shallow } from 'zustand/shallow';
 
 import { useFlowStore } from '@/store/soundStore';
 import { type OscNode } from './types';
+import { KnobFrequency } from '@/components/ui/KnobFrequency'
 
 // @ts-expect-error unknonw
 const selector = (id) => (store) => {
   return {
-    setFrequency: (e: ChangeEvent<HTMLInputElement>) => store.updateNode(id, { frequency: e?.target?.value }),
+    setFrequency: (newValue: number) => store.updateNode(id, { frequency: newValue }),
     setType: (e: ChangeEvent<HTMLSelectElement>) => store.updateNode(id, { type: e.target.value })
   }
 }
@@ -21,18 +22,12 @@ export function Osc({ id, data }: NodeProps<OscNode>) {
       <div>
         <p className="font-bold">Oscilator Node</p>
 
-        <label>
-          <span>Frequency</span>
-          <input
-            className='nodrag'
-            type='range'
-            min='1'
-            max='1000'
-            value={data.frequency}
-            onChange={setFrequency}
-          />
-          <span>{data.frequency}Hz</span>
-        </label>
+        <KnobFrequency
+          title='Frequency'
+          defaultValue={440}
+          value={data.frequency}
+          onChange={setFrequency}
+        />
 
         <label>
           <span>Waveform</span>

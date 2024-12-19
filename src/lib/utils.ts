@@ -27,3 +27,6 @@ export function githubPath(base: string) {
   }
   return `https://raw.githubusercontent.com/${path}`;
 }
+
+export const isNumberKey = (key: KeyboardEvent['key']): boolean =>
+  /^[,.\d]$/.test(key);
