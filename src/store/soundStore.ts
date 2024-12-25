@@ -38,8 +38,10 @@ type FlowStoreActions = {
   onNodesChange: OnNodesChange,
   onEdgesChange: OnEdgesChange,
   toggleAudio: () => void,
+  createNode: (type: audioNodeTypes) => void,
 }
-type FlowStore = FlowStoreState & FlowStoreActions
+
+export type FlowStore = FlowStoreState & FlowStoreActions
 
 export const nodes: AppNode[] = [
   { type: 'osc', id: 'osc', data: { frequency: 440, type: 'square' }, position: { x: 0, y: -200 }},
@@ -95,7 +97,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
     }
   },
 
-  createNode(type: audioNodeTypes) {
+  createNode(type) {
     const id = nanoid()
 
     switch(type) {

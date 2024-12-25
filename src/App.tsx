@@ -3,7 +3,7 @@ import {
   Background,
   Controls,
   MiniMap,
-  Panel
+  Panel,
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
@@ -14,6 +14,9 @@ import { edgeTypes } from '@/edges';
 import { useFlowStore } from '@/store/soundStore';
 import { Button } from '@/components/ui/button'
 import { Layout } from '@/components/layouts/layout'
+
+import { usePaneContextMenu } from '@/components/PaneContextMenu'
+import { useCallback } from 'react';
 
 // @ts-expect-error unknown
 const selector = (store) => ({
@@ -29,6 +32,11 @@ const selector = (store) => ({
 
 export default function App() {
   const store = useFlowStore(selector)
+  const [contextMenu, openContextMenu] = usePaneContextMenu()
+  const onPaneContextMenu = useCallback((event: React.MouseEvent | MouseEvent) => {
+    event.preventDefault();
+    openContextMenu(event.clientX, event.clientY)
+  } , [openContextMenu])
 
   return (
     <Layout
@@ -44,14 +52,12 @@ export default function App() {
             onEdgesChange={store.onEdgesChange}
             onEdgesDelete={store.onEdgesDelete}
             onConnect={store.onConnect}
+            onPaneContextMenu={onPaneContextMenu}
             fitView
           >
+            {contextMenu}
             <Panel position="top-right" className='space-x-2'>
               <Button onClick={() => store.createNode('osc')}>osc</Button>
-              <Button onClick={() => store.createNode('amp')}>amp</Button>
-              <Button onClick={() => store.createNode('analyser')}>analyser</Button>
-              <Button onClick={() => store.createNode('mixer')}>mixer</Button>
-              <Button onClick={() => store.createNode('renderer')}>renderer</Button>
             </Panel>
             <Background />
             <MiniMap />
