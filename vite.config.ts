@@ -20,4 +20,17 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom"],
+          radix: ["@radix-ui/react-context-menu", "@radix-ui/react-slot"],
+          xyflow: ["@xyflow/react"],
+          knob: ["react-knob-headless"],
+          css: ["clsx", "tailwind-merge", "class-variance-authority"],
+        },
+      },
+    }
+  }
 })
