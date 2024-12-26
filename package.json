@@ -11,6 +11,7 @@
     "res:clean": "rescript clean",
     "res:dev": "rescript -w"
   },
+  "packageManager": "pnpm@9.15.0",
   "dependencies": {
     "@elemaudio/core": "^4.0.1",
     "@elemaudio/web-renderer": "^4.0.1",
