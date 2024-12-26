@@ -159,7 +159,7 @@ export function Knob({
   };
 
   return (
-    <div className='relative text-xs nodrag'>
+    <div className='relative text-xs nodrag w-fit'>
       <div
         className={clsx(
           'flex select-none flex-col items-center outline-none focus-within:outline-dashed focus-within:outline-1 focus-within:outline-gray-300 mx-auto',

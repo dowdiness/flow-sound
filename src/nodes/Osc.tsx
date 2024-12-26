@@ -19,7 +19,7 @@ export function Osc({ id, data }: NodeProps<OscNode>) {
 
   return (
     <div className="react-flow__node-default">
-      <div>
+      <div className='flex flex-col items-center'>
         <p className="font-bold">Oscilator Node</p>
 
         <KnobFrequency
