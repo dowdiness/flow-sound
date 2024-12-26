@@ -15,10 +15,6 @@ export const Layout = ({ main, sub }: Props) => {
   useEffect(() => {
     if (buttonRef.current) {
       initAudioOnFirstClick(buttonRef.current)
-        // .then((() => console.log('then')))
-        .catch((error) => {
-          console.error(`Audio initialization error ${error}`)
-        })
     }
   }, [])
 

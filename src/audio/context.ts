@@ -4,6 +4,7 @@ import { audioNodeNames } from './types'
 import { createAudioNode, connect } from './index'
 import mixerWorkletUrl from '/processor/MixerProcessor.js?url'
 import { githubPath } from '@/lib/utils.ts'
+import type WebRenderer from '@elemaudio/web-renderer'
 
 let context: AudioContext | undefined;
 
@@ -22,33 +23,6 @@ export function getAudioContext() {
   return context;
 }
 
-async function initAudio() {
-  await getAudioContext().suspend()
-  await initAudioWorklet()
-  await initAudioGraph()
-}
-
-let isClicked: Promise<void> | undefined;
-
-/**
- * A click is needed to initialize audio because of the Autoplay Policy.
- * @see {@link https://www.w3.org/TR/autoplay-detection/}
-*/
-export async function initAudioOnFirstClick(element?: HTMLElement) {
-  const el = element ? element : document
-
-  if (!isClicked) {
-    isClicked = new Promise<void>((resolve) => {
-      el.addEventListener('click', async function listner() {
-        el.removeEventListener('click', listner)
-        await initAudio()
-        resolve()
-      })
-    })
-    return isClicked;
-  }
-}
-
 export async function initAudioGraph() {
   for (const node of initialNodes) {
     if (includes(audioNodeNames, node.type)) {
@@ -61,20 +35,12 @@ export async function initAudioGraph() {
   })
 }
 
-async function initAudioWorklet() {
-  if (!context) {
-    throw Error('Initiarize AudioWorklet is failed.')
-  }
-
+async function initAudioWorklet(context: AudioContext) {
   await context.audioWorklet.addModule(mixerWorkletUrl)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function initAudioSamples(core: any) {
-  if (!context) {
-    throw Error('Initiarize Audio Samples is failed.')
-  }
 
+export async function initAudioSamples(context: AudioContext,core: WebRenderer) {
   const res = await fetch(githubPath('github:wilf312/test/master/docs/trumpet1.mp3'));
   const sampleBuffer = await context.decodeAudioData(await res.arrayBuffer());
 
@@ -84,4 +50,50 @@ export async function initAudioSamples(core: any) {
       sampleBuffer.getChannelData(1),
     ],
   });
+}
+
+async function initAudio() {
+  const context = getAudioContext()
+  try {
+    await context.suspend()
+    await initAudioWorklet(context)
+    await initAudioGraph()
+  } catch (error) {
+    console.error(`initAudio() error: ${error}`)
+  }
+}
+
+let isAudioStarted = false
+/**
+ * A click is needed to initialize audio because of the Autoplay Policy.
+ * @see {@link https://www.w3.org/TR/autoplay-detection/}
+*/
+export async function initAudioOnFirstClick(element?: HTMLElement) {
+  const el = element ? element : document
+
+  if (!isAudioStarted) {
+    return new Promise<void>((resolve) => {
+      el.addEventListener('click', async function listner() {
+        el.removeEventListener('click', listner)
+        await initAudio()
+        resolve()
+      })
+    }).then(() => {
+      isAudioStarted = true
+      console.log('Audio initialization complete')
+    }).catch((error) => {
+      console.error(`Audio initialization by click event error: ${error}`)
+    }).finally(() => {
+      console.log('Audio ready')
+    })
+  }
+}
+
+export function isRunning() {
+  // Don't call getAudioContext() here if audio is not started because of the Autoplay Policy
+  return isAudioStarted ? getAudioContext().state === 'running' : false
+}
+
+export function toggleAudio() {
+  return isRunning() ? getAudioContext().suspend() : getAudioContext().resume()
 }

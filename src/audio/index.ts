@@ -1,16 +1,8 @@
-import { getAudioContext } from './context'
+import { getAudioContext, initAudioSamples, isRunning, toggleAudio } from '@/audio/context'
 import { type OutOptions } from '@/nodes/types'
 import type { audioNodeTypes } from '@/audio/types'
-import { initAudioSamples } from './context'
+
 export const audioNodes = new Map<string, AudioNode>();
-
-export function isRunning() {
-  return getAudioContext().state === 'running'
-}
-
-export function toggleAudio() {
-  return isRunning() ? getAudioContext().suspend() : getAudioContext().resume()
-}
 
 type nodeOptions =
   | OscillatorOptions
@@ -64,7 +56,7 @@ export async function createAudioNode(id: string, type: audioNodeTypes, data: no
       const { default: WebAudioRenderer} = await import('@elemaudio/web-renderer')
       const core = new WebAudioRenderer()
       core.initialize(context).then(async (node) => {
-        await initAudioSamples(core)
+        await initAudioSamples(context, core)
         const v = 10
         const vs = el.sm(el.const({key: 'ex1:mix', value: v * 4}));
         const gs = el.sm(el.const({key: 'ex1:gain', value: (1.2 - Math.sqrt(v))}));
@@ -141,3 +133,5 @@ export function output(sourceId: string) {
 
   source?.connect(getAudioContext().destination)
 }
+
+export { isRunning, toggleAudio }
