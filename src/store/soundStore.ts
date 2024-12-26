@@ -38,7 +38,7 @@ type FlowStoreActions = {
   onNodesChange: OnNodesChange,
   onEdgesChange: OnEdgesChange,
   toggleAudio: () => void,
-  createNode: (type: audioNodeTypes) => void,
+  createNode: (type: audioNodeTypes) => Promise<void>,
 }
 
 export type FlowStore = FlowStoreState & FlowStoreActions
@@ -97,7 +97,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
     }
   },
 
-  createNode(type) {
+  async createNode(type) {
     const id = nanoid()
 
     switch(type) {
@@ -105,7 +105,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
         const data = { frequency: 440, type: 'sine' } as const
         const position = { x: 0, y: 0 }
 
-        createAudioNode(id, type, data)
+        await createAudioNode(id, type, data)
         set({ nodes: [...get().nodes, { id, type, data, position }]})
         break
       }
@@ -114,7 +114,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
         const data = { gain: 0.5 }
         const position = { x: 0, y: 0 }
 
-        createAudioNode(id, type, data)
+        await createAudioNode(id, type, data)
         set({ nodes: [...get().nodes, { id, type, data, position }]})
         break
       }
@@ -127,7 +127,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
           smoothingTimeConstant: 0.85
         }
         const position = { x: 0, y: 0 }
-        createAudioNode(id, type, data)
+        await createAudioNode(id, type, data)
         set({ nodes: [...get().nodes, { id, type, data, position }]})
         break
       }
@@ -136,7 +136,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
         const position = { x: 0, y: 0 }
         const data = {}
 
-        createAudioNode(id, type, data)
+        await createAudioNode(id, type, data)
         set({ nodes: [...get().nodes, { id, type, data, position }]})
         break
       }
@@ -150,7 +150,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
         const position = { x: 0, y: 0 }
         const data = {}
 
-        createAudioNode(id, type, data)
+        await createAudioNode(id, type, data)
         set({ nodes: [...get().nodes, { id, type, data, position }]})
         break
       }

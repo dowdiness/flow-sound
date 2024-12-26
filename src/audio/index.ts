@@ -1,8 +1,6 @@
 import { getAudioContext } from './context'
 import { type OutOptions } from '@/nodes/types'
 import type { audioNodeTypes } from '@/audio/types'
-import { el } from '@elemaudio/core'
-import WebAudioRenderer from '@elemaudio/web-renderer';
 import { initAudioSamples } from './context'
 export const audioNodes = new Map<string, AudioNode>();
 
@@ -20,7 +18,7 @@ type nodeOptions =
   | AnalyserOptions
   | OutOptions
 
-export function createAudioNode(id: string, type: audioNodeTypes, data: nodeOptions) {
+export async function createAudioNode(id: string, type: audioNodeTypes, data: nodeOptions) {
   const context = getAudioContext();
 
   switch (type) {
@@ -62,6 +60,8 @@ export function createAudioNode(id: string, type: audioNodeTypes, data: nodeOpti
     }
 
     case 'renderer': {
+      const { el } = await import('@elemaudio/core')
+      const { default: WebAudioRenderer} = await import('@elemaudio/web-renderer')
       const core = new WebAudioRenderer()
       core.initialize(context).then(async (node) => {
         await initAudioSamples(core)

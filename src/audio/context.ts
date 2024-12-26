@@ -25,7 +25,7 @@ export function getAudioContext() {
 async function initAudio() {
   await getAudioContext().suspend()
   await initAudioWorklet()
-  initAudioGraph()
+  await initAudioGraph()
 }
 
 let isClicked: Promise<void> | undefined;
@@ -49,12 +49,12 @@ export async function initAudioOnFirstClick(element?: HTMLElement) {
   }
 }
 
-export function initAudioGraph() {
-  initialNodes.forEach(((node) => {
+export async function initAudioGraph() {
+  for (const node of initialNodes) {
     if (includes(audioNodeNames, node.type)) {
-      createAudioNode(node.id, node.type, node.data)
+      await createAudioNode(node.id, node.type, node.data)
     }
-  }))
+  }
 
   initialEdges.forEach((edge) => {
     connect(edge.source, edge.target)
