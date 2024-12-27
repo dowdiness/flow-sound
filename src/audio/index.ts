@@ -1,6 +1,7 @@
 import { getAudioContext, initAudioSamples, isRunning, toggleAudio } from '@/audio/context'
 import { type OutOptions } from '@/nodes/types'
 import type { audioNodeTypes } from '@/audio/types'
+import type { Connection } from '@xyflow/react';
 
 export const audioNodes = new Map<string, AudioNode>();
 
@@ -110,10 +111,11 @@ export function removeAudioNode(id: string) {
   audioNodes.delete(id);
 }
 
-export function connect(sourceId: string, targetId: string) {
-  const source = audioNodes.get(sourceId)
-  const target = audioNodes.get(targetId)
+export function connect(connection: Connection) {
+  const source = audioNodes.get(connection.source)
+  const target = audioNodes.get(connection.target)
 
+  // TODO handle sourceHandle and targetHandle
   if(source && target) {
     source.connect(target)
   }

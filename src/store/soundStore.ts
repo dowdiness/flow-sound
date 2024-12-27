@@ -81,7 +81,7 @@ export const useFlowStore = createWithEqualityFn<FlowStore>((set, get) => ({
     // connect react flow nodes
     set({ edges: addEdge(newConnection, get().edges) });
     // connect audio nodes
-    connect(newConnection.source, newConnection.target)
+    connect(newConnection)
   },
 
   toggleAudio() {

@@ -5,6 +5,7 @@ import { createAudioNode, connect } from './index'
 import mixerWorkletUrl from '/processor/MixerProcessor.js?url'
 import { githubPath } from '@/lib/utils.ts'
 import type WebRenderer from '@elemaudio/web-renderer'
+import type { Connection } from '@xyflow/react'
 
 let context: AudioContext | undefined;
 
@@ -31,7 +32,12 @@ export async function initAudioGraph() {
   }
 
   initialEdges.forEach((edge) => {
-    connect(edge.source, edge.target)
+    const connection: Connection = {
+      source: edge.source, target: edge.target,
+      sourceHandle: null,
+      targetHandle: null
+    }
+    connect(connection)
   })
 }
 
@@ -80,11 +86,9 @@ export async function initAudioOnFirstClick(element?: HTMLElement) {
       })
     }).then(() => {
       isAudioStarted = true
-      console.log('Audio initialization complete')
+      console.log('Audio initialization completed')
     }).catch((error) => {
       console.error(`Audio initialization by click event error: ${error}`)
-    }).finally(() => {
-      console.log('Audio ready')
     })
   }
 }
